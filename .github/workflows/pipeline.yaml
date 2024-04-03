@@ -1,27 +1,19 @@
-name: WPF CHECK # Устанавливаем имя рабочего процесса (workflow) как "Syntax Check"
-
-on:
-  push: # Событие, при котором должен запускаться рабочий процесс 
-    branches:
-      - main # Рабочий процесс будет запускаться только при пуше в ветку main
 jobs:
-  syntax-check: # Название задания (job) "syntax-check"
-    runs-on: windows-latest # Указываем операционную систему, на которой будет дыполняться дадание
+  syntax-check:
+    runs-on: windows-latest
 
-    steps: # Шаги, которые нужно выполнить в рамках задания
-    - name: Checkout repository # War "Checkout repository" - клонирование pепозитория 
-      uses: actions/checkout@v2 # Используем действие для клонирования pепозитория
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Setup .NET Core # Car "Setup .NET Core" - установка .NET Core 
-      uses: actions/setup-dotnet@vi # Используем действие для установки …NET Core: 
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x' # Устанавливаем версию .NET Core
-  
-    - name: Restore dependencies # War "Restore dependencies" - восстановление 3ависимостей 
-      run: dotnet restore # Выполняем команду dotnet restore для восстановления зависимостей
+        dotnet-version: '6.0.x'
 
-    - name: Install NuGet package # Шаг "Install NuGet package" - установка пакета NuGet 
-      run: dotnet add SocailNetSchool/SocailNetSchool.csproj package Microsoft.CodeAnalysis.NetAnalyzers --version 8.0.0 # Устанавливаем пакет NuGet Microsoft.CodeAnalysis.N
-    
-    - name: Run Roslyn Analyzers # at "Run Roslyn Analyzers" - запуск анализаторов Roslyn 
-      run: dotnet build SocailNetSchool/SocailNetSchool.csproj /p:WarningLevel=6 /p:DebugType=None /p:DebugSymbols-false /p:Platform="Any CPU" /p:TreatWarningsAsErrors=true
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build WPF Project
+      run: |
+        dotnet build YourWPFProject/YourWPFProject.csproj --configuration Release /p:Platform="AnyCPU" /p:WarningLevel=6 /p:DebugType=None /p:DebugSymbols=false /p:Platform="Any CPU" /p:TreatWarningsAsErrors=true /p:DefineConstants=TRACE
