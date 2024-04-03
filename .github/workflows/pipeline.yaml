@@ -1,3 +1,10 @@
+name: WPF CHECK
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   syntax-check:
     runs-on: windows-latest
@@ -14,6 +21,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build WPF Project
+    - name: Install NuGet package
+      run: dotnet add SocailNetSchool/SocailNetSchool.csproj package Microsoft.CodeAnalysis.NetAnalyzers --version 8.0.0
+
+    - name: Build and Analyze WPF Project
       run: |
-        dotnet build YourWPFProject/YourWPFProject.csproj --configuration Release /p:Platform="AnyCPU" /p:WarningLevel=6 /p:DebugType=None /p:DebugSymbols=false /p:Platform="Any CPU" /p:TreatWarningsAsErrors=true /p:DefineConstants=TRACE
+        dotnet build SocailNetSchool/SocailNetSchool.csproj --configuration Release /p:Platform="AnyCPU" /p:WarningLevel=6 /p:DebugType=None /p:DebugSymbols=false /p:Platform="Any CPU" /p:TreatWarningsAsErrors=true /p:DefineConstants=TRACE 
